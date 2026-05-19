@@ -45,7 +45,7 @@ Para testar do zero no navegador, limpe a chave `portugues-diario-rotation` do `
 
 ## Links atuais
 
-Os links "Sugerir uma dica", "ADM" e "Buy me a coffee" aparecem como placeholders visuais. Eles nao navegam nesta fase porque as rotas e a URL de apoio ainda nao foram definidas.
+Os links "Sugerir uma dica" e "ADM" aparecem como placeholders visuais. Eles nao navegam nesta fase porque as rotas ainda nao foram definidas. O apoio ao projeto usa o widget flutuante oficial do Buy me a coffee no desktop e um link compacto no rodape do mobile.
 
 ## Contrato futuro da API
 
