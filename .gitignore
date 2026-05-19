@@ -1,0 +1,23 @@
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs and local scratch files
+*.log
+*.tmp
+*.bak
+
+# Dependency/build folders, caso o projeto ganhe ferramentas no futuro
+node_modules/
+dist/
+build/
+.cache/
+.parcel-cache/
+.vite/
+
+# Environment files for future backend/API work
+.env
+.env.*
+!.env.example
