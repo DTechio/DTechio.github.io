@@ -58,7 +58,7 @@ a {
 }
 
 a:focus-visible,
-.future-link:focus-visible,
+.suggestion-link:focus-visible,
 .mobile-support-link:focus-visible {
   outline: 2px solid rgba(63, 111, 116, 0.46);
   outline-offset: 4px;
@@ -135,19 +135,26 @@ h1 {
 
 .example {
   margin: 0;
-  padding: 15px 16px;
-  border-left: 3px solid var(--accent);
-  border-radius: 6px;
-  background: var(--paper-strong);
+  padding: 4px 0 4px 18px;
+  border-left: 2px solid rgba(63, 111, 116, 0.62);
+  border-radius: 0;
+  background: transparent;
   color: #34454d;
-  line-height: 1.55;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.02rem;
+  font-style: italic;
+  line-height: 1.6;
 }
 
 .example strong {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   color: var(--muted);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   font-size: 0.76rem;
+  font-style: normal;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -161,8 +168,8 @@ h1 {
   padding: 18px clamp(20px, 5vw, 56px);
   color: rgba(31, 42, 50, 0.78);
   font-size: 0.92rem;
-  background: var(--footer-surface);
-  backdrop-filter: blur(10px);
+  background: transparent;
+  backdrop-filter: none;
 }
 
 .footer-links {
@@ -172,28 +179,19 @@ h1 {
   white-space: nowrap;
 }
 
-.future-link {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  border-radius: 999px;
-  color: rgba(31, 42, 50, 0.72);
-  cursor: default;
+.suggestion-link {
+  color: rgba(31, 42, 50, 0.76);
+  font-size: 0.9rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(31, 42, 50, 0.28);
+  transition:
+    color 160ms ease,
+    text-decoration-color 160ms ease;
 }
 
-.future-link {
-  padding: 6px 10px;
-  border: 1px solid rgba(31, 42, 50, 0.12);
-  background: rgba(255, 255, 255, 0.28);
-  font-size: 0.86rem;
-}
-
-.future-link::after {
-  content: "em breve";
-  margin-left: 7px;
-  color: rgba(31, 42, 50, 0.52);
-  font-size: 0.72rem;
+.suggestion-link:hover {
+  color: var(--accent);
+  text-decoration-color: rgba(63, 111, 116, 0.58);
 }
 
 .mobile-support-link {
@@ -225,10 +223,6 @@ h1 {
   .footer-links {
     flex-wrap: wrap;
     justify-content: center;
-  }
-
-  .future-link::after {
-    display: none;
   }
 
   .mobile-support-link {
