@@ -23,13 +23,14 @@ Depois de publicar, confira se a pagina carrega, se as imagens externas aparecem
 - `index.html`: estrutura da pagina.
 - `styles.css`: visual minimalista, responsivo, com paisagem borrada de fundo.
 - `tips.js`: base local de dicas no formato da futura API.
-- `script.js`: paisagens aleatorias, selecao da dica diaria e renderizacao.
+- `script.js`: paisagens aleatorias, chamada ao Supabase, fallback local e renderizacao.
 
-A funcao `getDailyTip()` em `script.js` esta isolada para ser trocada futuramente por:
+O frontend chama a funcao `get_daily_tip` do Supabase usando a Publishable key. Se a chamada falhar, a pagina usa `tips.js` como fallback local.
 
 ```js
-const response = await fetch("/api/daily-tip");
-return response.json();
+const { data, error } = await supabaseClient.rpc("get_daily_tip", {
+  target_date: today
+});
 ```
 
 ## Rotacao local atual

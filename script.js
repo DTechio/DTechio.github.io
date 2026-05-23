@@ -8,6 +8,12 @@ const landscapes = [
 
 const mockTips = window.portuguesDiarioTips || [];
 const DAILY_TIP_STORAGE_KEY = "portugues-diario-rotation";
+const SUPABASE_URL = "https://bqahyhmtezaadsfrbgtf.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_QOk7JxF1hzynK3W-ouAfpw_MjgPAyQo";
+const supabaseClient = window.supabase?.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit",
@@ -122,15 +128,30 @@ function selectDailyTip(today) {
 }
 
 async function getDailyTip() {
-  // Future backend replacement:
-  // const response = await fetch("/api/daily-tip");
-  // if (!response.ok) throw new Error("Nao foi possivel carregar a dica do dia.");
-  // return response.json();
+  const today = getLocalDateKey();
+
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient.rpc("get_daily_tip", {
+        target_date: today
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (Array.isArray(data) && data.length > 0) {
+        return data[0];
+      }
+    } catch (error) {
+      console.warn("Nao foi possivel carregar a dica pelo Supabase.", error);
+    }
+  }
+
   if (mockTips.length === 0) {
     throw new Error("Nenhuma dica local foi encontrada.");
   }
 
-  const today = getLocalDateKey();
   const selectedTip = selectDailyTip(today);
 
   return {
