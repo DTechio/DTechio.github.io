@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sugira uma dica de português para o Português Diário."
+    />
+    <title>Sugerir uma dica | Português Diário</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell" aria-labelledby="suggestion-title">
+      <section class="tip-panel suggestion-panel">
+        <p class="eyebrow">Colabore com o projeto</p>
+        <h1 id="suggestion-title">Sugerir uma dica</h1>
+        <p class="tip-content">
+          Envie uma ideia curta, com explicação e exemplos. As sugestões passam por revisão antes de aparecer no site.
+        </p>
+
+        <form class="suggestion-form" id="suggestion-form">
+          <div class="form-field">
+            <label for="title">Título</label>
+            <input id="title" name="title" type="text" maxlength="120" required />
+          </div>
+
+          <div class="form-field">
+            <label for="category">Categoria</label>
+            <select id="category" name="category_id">
+              <option value="">Não sei a categoria</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="content">Explicação</label>
+            <textarea id="content" name="content" rows="4" maxlength="700" required></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="example">Exemplo</label>
+            <input id="example" name="example" type="text" maxlength="240" />
+          </div>
+
+          <div class="form-field">
+            <label for="example2">Outro exemplo</label>
+            <input id="example2" name="example2" type="text" maxlength="240" />
+          </div>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="suggested_by_name">Nome</label>
+              <input id="suggested_by_name" name="suggested_by_name" type="text" maxlength="120" />
+            </div>
+
+            <div class="form-field">
+              <label for="suggested_by_email">E-mail</label>
+              <input id="suggested_by_email" name="suggested_by_email" type="email" maxlength="180" />
+            </div>
+          </div>
+
+          <button class="submit-button" type="submit">Enviar sugestão</button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="footer-links" aria-label="Links do site">
+        <a class="suggestion-link" href="index.html" aria-label="Voltar para a dica do dia">
+          Voltar para dica
+        </a>
+      </nav>
+      <a
+        class="mobile-support-link"
+        href="https://www.buymeacoffee.com/dtechio"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Apoiar o projeto no Buy me a coffee"
+      >
+        <img src="assets/buy-me-a-coffee-icon.svg" alt="" aria-hidden="true" />
+        <span>Buy me a coffee</span>
+      </a>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="suggestion.js"></script>
+    <script
+      data-name="BMC-Widget"
+      data-cfasync="false"
+      src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+      data-id="DTechio"
+      data-description="Support me on Buy me a coffee!"
+      data-message="Gostou da dica? Apoie o projeto!"
+      data-color="#5F7FFF"
+      data-position="Right"
+      data-x_margin="18"
+      data-y_margin="18"
+    ></script>
+  </body>
+</html>
