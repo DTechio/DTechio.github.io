@@ -127,6 +127,14 @@ h1 {
   width: min(760px, 100%);
 }
 
+.admin-shell {
+  place-items: start center;
+}
+
+.admin-panel {
+  width: min(980px, 100%);
+}
+
 .suggestion-form {
   display: grid;
   gap: 18px;
@@ -225,6 +233,121 @@ h1 {
   color: #9d3030;
 }
 
+.admin-dashboard {
+  margin-top: 30px;
+}
+
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-kicker,
+.admin-user {
+  margin: 0;
+}
+
+.admin-kicker {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-user {
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.admin-actions,
+.suggestion-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.text-button {
+  border: 0;
+  background: transparent;
+  color: rgba(31, 42, 50, 0.74);
+  cursor: pointer;
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(31, 42, 50, 0.28);
+  text-underline-offset: 0.25em;
+}
+
+.text-button:hover {
+  color: var(--accent);
+  text-decoration-color: rgba(63, 111, 116, 0.58);
+}
+
+.danger-button:hover {
+  color: #9d3030;
+  text-decoration-color: rgba(157, 48, 48, 0.48);
+}
+
+.compact-button {
+  padding: 8px 13px;
+}
+
+.suggestions-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.suggestion-card {
+  padding: 18px;
+  border: 1px solid rgba(31, 42, 50, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.suggestion-meta,
+.suggestion-author {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.suggestion-title {
+  margin: 8px 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.suggestion-content {
+  margin: 12px 0 0;
+  line-height: 1.6;
+}
+
+.suggestion-example {
+  margin: 12px 0 0;
+  padding-left: 14px;
+  border-left: 2px solid rgba(63, 111, 116, 0.52);
+  color: #34454d;
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+}
+
+.suggestion-author,
+.suggestion-actions {
+  margin-top: 14px;
+}
+
+.empty-state {
+  margin: 0;
+  color: var(--muted);
+}
+
 .examples {
   display: grid;
   gap: 12px;
@@ -319,6 +442,20 @@ h1 {
   }
 
   .submit-button {
+    width: 100%;
+  }
+
+  .admin-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-actions,
+  .suggestion-actions {
+    width: 100%;
+  }
+
+  .compact-button {
     width: 100%;
   }
 

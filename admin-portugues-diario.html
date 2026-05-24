@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>ADM | Português Diário</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell admin-shell" aria-labelledby="admin-title">
+      <section class="tip-panel admin-panel">
+        <p class="eyebrow">Área reservada</p>
+        <h1 id="admin-title">ADM</h1>
+
+        <form class="suggestion-form admin-login" id="admin-login-form">
+          <div class="form-field">
+            <label for="admin-email">E-mail</label>
+            <input id="admin-email" name="email" type="email" autocomplete="email" required />
+          </div>
+
+          <div class="form-field">
+            <label for="admin-password">Senha</label>
+            <input
+              id="admin-password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button class="submit-button" type="submit">Entrar</button>
+          <p class="form-status" id="admin-login-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <section class="admin-dashboard" id="admin-dashboard" hidden>
+          <div class="admin-toolbar">
+            <div>
+              <p class="admin-kicker">Logado como</p>
+              <p class="admin-user" id="admin-user">Administrador</p>
+            </div>
+            <div class="admin-actions">
+              <button class="text-button" id="refresh-suggestions" type="button">Atualizar</button>
+              <button class="text-button" id="logout-button" type="button">Sair</button>
+            </div>
+          </div>
+
+          <div class="suggestions-list" id="suggestions-list"></div>
+          <p class="form-status" id="admin-status" role="status" aria-live="polite"></p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <nav class="footer-links" aria-label="Links do site">
+        <a class="suggestion-link" href="index.html" aria-label="Voltar para a dica do dia">
+          Voltar para dica
+        </a>
+      </nav>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
