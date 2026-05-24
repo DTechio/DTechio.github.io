@@ -218,8 +218,10 @@ h1 {
 }
 
 .submit-button:disabled {
-  cursor: wait;
-  opacity: 0.68;
+  background: rgba(31, 42, 50, 0.24);
+  color: rgba(31, 42, 50, 0.48);
+  cursor: not-allowed;
+  opacity: 1;
 }
 
 .form-status {
@@ -281,6 +283,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .admin-filter label {
@@ -291,6 +294,16 @@ h1 {
 }
 
 .admin-filter select {
+  border: 1px solid rgba(31, 42, 50, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--ink);
+  font: inherit;
+  padding: 8px 12px;
+}
+
+.admin-filter input {
+  min-width: min(260px, 100%);
   border: 1px solid rgba(31, 42, 50, 0.16);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.66);
@@ -355,6 +368,42 @@ h1 {
   margin-top: 20px;
 }
 
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0 2px;
+}
+
+.pagination-size,
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pagination-size label,
+.pagination-info {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.pagination-size select {
+  border: 1px solid rgba(31, 42, 50, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--ink);
+  font: inherit;
+  padding: 7px 10px;
+}
+
+.text-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
 .suggestion-card {
   padding: 18px;
   border: 1px solid rgba(31, 42, 50, 0.12);
@@ -400,6 +449,18 @@ h1 {
   display: grid;
   gap: 14px;
   margin-top: 16px;
+}
+
+.new-tip-form {
+  margin-bottom: 20px;
+  padding: 18px;
+  border: 1px solid rgba(31, 42, 50, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.38);
+}
+
+.new-tip-button {
+  margin-left: auto;
 }
 
 .empty-state {
@@ -510,12 +571,23 @@ h1 {
   }
 
   .admin-actions,
-  .suggestion-actions {
+  .suggestion-actions,
+  .pagination-controls,
+  .pagination-buttons {
     width: 100%;
+  }
+
+  .pagination-controls {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .compact-button {
     width: 100%;
+  }
+
+  .new-tip-button {
+    margin-left: 0;
   }
 
   .site-footer {

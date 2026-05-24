@@ -56,6 +56,10 @@
           </div>
 
           <section class="admin-tab-panel" id="suggestions-panel">
+            <div class="admin-filter">
+              <label for="suggestion-search">Buscar</label>
+              <input id="suggestion-search" type="search" placeholder="Título da sugestão" />
+            </div>
             <div class="suggestions-list" id="suggestions-list"></div>
           </section>
 
@@ -67,7 +71,47 @@
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
+              <label for="tip-search">Buscar</label>
+              <input id="tip-search" type="search" placeholder="Título da dica" />
+              <button class="submit-button compact-button new-tip-button" id="toggle-new-tip" type="button">
+                Nova dica manual
+              </button>
             </div>
+
+            <form class="admin-tip-form new-tip-form" id="new-tip-form" hidden>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="new-tip-title">Título</label>
+                  <input id="new-tip-title" name="title" type="text" required />
+                </div>
+
+                <div class="form-field">
+                  <label for="new-tip-category">Categoria</label>
+                  <select id="new-tip-category" name="category_id" required></select>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="new-tip-content">Explicação</label>
+                <textarea id="new-tip-content" name="content" rows="4" required></textarea>
+              </div>
+
+              <div class="form-field">
+                <label for="new-tip-example">Exemplo</label>
+                <input id="new-tip-example" name="example" type="text" />
+              </div>
+
+              <div class="form-field">
+                <label for="new-tip-example2">Outro exemplo</label>
+                <input id="new-tip-example2" name="example2" type="text" />
+              </div>
+
+              <div class="suggestion-actions">
+                <button class="submit-button compact-button" type="submit">Salvar como draft</button>
+                <button class="text-button" id="cancel-new-tip" type="button">Cancelar</button>
+              </div>
+            </form>
+
             <div class="suggestions-list" id="tips-list"></div>
           </section>
 

@@ -15,6 +15,22 @@ const supabaseClient = window.supabase?.createClient(
 
 let categories = [];
 let activeTab = "suggestions";
+const pagination = {
+  suggestions: {
+    items: [],
+    filteredItems: [],
+    page: 1,
+    pageSize: 3,
+    searchTerm: ""
+  },
+  tips: {
+    items: [],
+    filteredItems: [],
+    page: 1,
+    pageSize: 3,
+    searchTerm: ""
+  }
+};
 
 function applyRandomLandscape() {
   const randomIndex = Math.floor(Math.random() * landscapes.length);
@@ -50,6 +66,104 @@ function createTextElement(tagName, className, text) {
   element.className = className;
   element.textContent = text || "";
   return element;
+}
+
+function getPaginatedItems(type) {
+  const state = pagination[type];
+  const start = (state.page - 1) * state.pageSize;
+  return state.filteredItems.slice(start, start + state.pageSize);
+}
+
+function getTotalPages(type) {
+  const state = pagination[type];
+  return Math.max(1, Math.ceil(state.filteredItems.length / state.pageSize));
+}
+
+function clampCurrentPage(type) {
+  const state = pagination[type];
+  state.page = Math.min(Math.max(state.page, 1), getTotalPages(type));
+}
+
+function createPagination(type) {
+  const state = pagination[type];
+  const totalPages = getTotalPages(type);
+  const controls = document.createElement("div");
+  controls.className = "pagination-controls";
+
+  const pageSizeLabel = document.createElement("label");
+  pageSizeLabel.textContent = "Itens por página";
+
+  const pageSizeSelect = document.createElement("select");
+  [3, 5, 10, 20].forEach((value) => {
+    const option = document.createElement("option");
+    option.value = String(value);
+    option.textContent = String(value);
+    option.selected = value === state.pageSize;
+    pageSizeSelect.append(option);
+  });
+  pageSizeSelect.addEventListener("change", () => {
+    state.pageSize = Number(pageSizeSelect.value);
+    state.page = 1;
+    renderCurrentPage(type);
+  });
+
+  const previousButton = document.createElement("button");
+  previousButton.className = "text-button";
+  previousButton.type = "button";
+  previousButton.textContent = "Anterior";
+  previousButton.disabled = state.page === 1;
+  previousButton.addEventListener("click", () => {
+    state.page -= 1;
+    renderCurrentPage(type);
+  });
+
+  const nextButton = document.createElement("button");
+  nextButton.className = "text-button";
+  nextButton.type = "button";
+  nextButton.textContent = "Próxima";
+  nextButton.disabled = state.page === totalPages;
+  nextButton.addEventListener("click", () => {
+    state.page += 1;
+    renderCurrentPage(type);
+  });
+
+  const pageInfo = createTextElement(
+    "span",
+    "pagination-info",
+    `Página ${state.page} de ${totalPages} · ${state.filteredItems.length} item(ns)`
+  );
+
+  const pageSizeGroup = document.createElement("div");
+  pageSizeGroup.className = "pagination-size";
+  pageSizeGroup.append(pageSizeLabel, pageSizeSelect);
+
+  const pageButtons = document.createElement("div");
+  pageButtons.className = "pagination-buttons";
+  pageButtons.append(previousButton, pageInfo, nextButton);
+
+  controls.append(pageSizeGroup, pageButtons);
+  return controls;
+}
+
+function renderCurrentPage(type) {
+  clampCurrentPage(type);
+
+  if (type === "suggestions") {
+    renderSuggestions();
+  } else {
+    renderTips();
+  }
+}
+
+function applyLocalSearch(type) {
+  const state = pagination[type];
+  const searchTerm = state.searchTerm.trim().toLocaleLowerCase("pt-BR");
+
+  state.filteredItems = searchTerm
+    ? state.items.filter((item) => item.title.toLocaleLowerCase("pt-BR").includes(searchTerm))
+    : [...state.items];
+  state.page = 1;
+  renderCurrentPage(type);
 }
 
 function createField(labelText, inputElement) {
@@ -95,6 +209,42 @@ function createCategorySelect(selectedCategoryId) {
   });
 
   return select;
+}
+
+function getTipFormSnapshot(form) {
+  const formData = new FormData(form);
+
+  return JSON.stringify({
+    title: formData.get("title").trim(),
+    category_id: formData.get("category_id"),
+    content: formData.get("content").trim(),
+    example: normalizeOptionalValue(formData.get("example")),
+    example2: normalizeOptionalValue(formData.get("example2"))
+  });
+}
+
+function updateSaveButtonState(form) {
+  const saveButton = form.querySelector("button[type='submit']");
+  saveButton.disabled = getTipFormSnapshot(form) === form.dataset.initialSnapshot;
+}
+
+function trackTipFormChanges(form) {
+  form.dataset.initialSnapshot = getTipFormSnapshot(form);
+  updateSaveButtonState(form);
+  form.addEventListener("input", () => updateSaveButtonState(form));
+  form.addEventListener("change", () => updateSaveButtonState(form));
+}
+
+function fillNewTipCategorySelect() {
+  const select = document.querySelector("#new-tip-category");
+  select.innerHTML = "";
+
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    select.append(option);
+  });
 }
 
 async function getAdminProfile(userId) {
@@ -150,14 +300,21 @@ async function loadCategories() {
   }
 
   categories = data || [];
+  fillNewTipCategorySelect();
 }
 
-function renderSuggestions(suggestions) {
+function renderSuggestions() {
   const list = document.querySelector("#suggestions-list");
   list.innerHTML = "";
+  const suggestions = getPaginatedItems("suggestions");
 
-  if (suggestions.length === 0) {
+  if (pagination.suggestions.items.length === 0) {
     list.append(createTextElement("p", "empty-state", "Nenhuma sugestao pendente."));
+    return;
+  }
+
+  if (pagination.suggestions.filteredItems.length === 0) {
+    list.append(createTextElement("p", "empty-state", "Nenhuma sugestao encontrada."));
     return;
   }
 
@@ -212,6 +369,8 @@ function renderSuggestions(suggestions) {
     article.append(actions);
     list.append(article);
   });
+
+  list.append(createPagination("suggestions"));
 }
 
 async function loadSuggestions() {
@@ -230,16 +389,31 @@ async function loadSuggestions() {
     throw error;
   }
 
-  renderSuggestions(data || []);
+  pagination.suggestions.items = data || [];
+  pagination.suggestions.filteredItems = [...pagination.suggestions.items];
+  pagination.suggestions.page = 1;
+  pagination.suggestions.searchTerm = document.querySelector("#suggestion-search").value;
+  if (pagination.suggestions.searchTerm) {
+    applyLocalSearch("suggestions");
+    setStatus("#admin-status", "", "neutral");
+    return;
+  }
+  renderSuggestions();
   setStatus("#admin-status", "", "neutral");
 }
 
-function renderTips(tips) {
+function renderTips() {
   const list = document.querySelector("#tips-list");
   list.innerHTML = "";
+  const tips = getPaginatedItems("tips");
 
-  if (tips.length === 0) {
+  if (pagination.tips.items.length === 0) {
     list.append(createTextElement("p", "empty-state", "Nenhuma dica encontrada para este status."));
+    return;
+  }
+
+  if (pagination.tips.filteredItems.length === 0) {
+    list.append(createTextElement("p", "empty-state", "Nenhuma dica encontrada."));
     return;
   }
 
@@ -281,6 +455,7 @@ function renderTips(tips) {
     saveButton.className = "submit-button compact-button";
     saveButton.type = "submit";
     saveButton.textContent = "Salvar";
+    saveButton.disabled = true;
 
     const activateButton = document.createElement("button");
     activateButton.className = "text-button";
@@ -306,10 +481,13 @@ function renderTips(tips) {
     actions.append(saveButton, activateButton, draftButton, inactiveButton);
     form.append(actions);
     form.addEventListener("submit", (event) => saveTip(event, tip.id));
+    trackTipFormChanges(form);
 
     article.append(form);
     list.append(article);
   });
+
+  list.append(createPagination("tips"));
 }
 
 async function loadTips() {
@@ -327,7 +505,16 @@ async function loadTips() {
     throw error;
   }
 
-  renderTips(data || []);
+  pagination.tips.items = data || [];
+  pagination.tips.filteredItems = [...pagination.tips.items];
+  pagination.tips.page = 1;
+  pagination.tips.searchTerm = document.querySelector("#tip-search").value;
+  if (pagination.tips.searchTerm) {
+    applyLocalSearch("tips");
+    setStatus("#admin-status", "", "neutral");
+    return;
+  }
+  renderTips();
   setStatus("#admin-status", "", "neutral");
 }
 
@@ -424,6 +611,45 @@ async function changeTipStatus(tipId, status) {
   await loadTips();
 }
 
+function toggleNewTipForm(forceOpen = null) {
+  const form = document.querySelector("#new-tip-form");
+  const shouldOpen = forceOpen === null ? form.hidden : forceOpen;
+  form.hidden = !shouldOpen;
+  document.querySelector("#toggle-new-tip").hidden = shouldOpen;
+}
+
+async function createManualTip(event) {
+  event.preventDefault();
+
+  const form = event.currentTarget;
+  const formData = new FormData(form);
+  const payload = {
+    new_title: formData.get("title").trim(),
+    new_category_id: formData.get("category_id"),
+    new_content: formData.get("content").trim(),
+    new_example: normalizeOptionalValue(formData.get("example")),
+    new_example2: normalizeOptionalValue(formData.get("example2"))
+  };
+
+  setStatus("#admin-status", "Criando dica manual...", "neutral");
+
+  const { error } = await supabaseClient.rpc("create_manual_tip", payload);
+
+  if (error) {
+    console.error(error);
+    setStatus("#admin-status", "Nao foi possivel criar a dica.", "error");
+    return;
+  }
+
+  form.reset();
+  toggleNewTipForm(false);
+  document.querySelector("#tip-status-filter").value = "draft";
+  document.querySelector("#tip-search").value = "";
+  pagination.tips.searchTerm = "";
+  setStatus("#admin-status", "Dica criada como draft.", "success");
+  await loadTips();
+}
+
 async function handleLogin(event) {
   event.preventDefault();
 
@@ -491,6 +717,17 @@ function init() {
   document.querySelector("#logout-button").addEventListener("click", handleLogout);
   document.querySelector("#refresh-admin").addEventListener("click", loadActiveTab);
   document.querySelector("#tip-status-filter").addEventListener("change", loadTips);
+  document.querySelector("#toggle-new-tip").addEventListener("click", () => toggleNewTipForm(true));
+  document.querySelector("#cancel-new-tip").addEventListener("click", () => toggleNewTipForm(false));
+  document.querySelector("#new-tip-form").addEventListener("submit", createManualTip);
+  document.querySelector("#suggestion-search").addEventListener("input", (event) => {
+    pagination.suggestions.searchTerm = event.target.value;
+    applyLocalSearch("suggestions");
+  });
+  document.querySelector("#tip-search").addEventListener("input", (event) => {
+    pagination.tips.searchTerm = event.target.value;
+    applyLocalSearch("tips");
+  });
   document.querySelectorAll("[data-admin-tab]").forEach((button) => {
     button.addEventListener("click", () => setActiveTab(button.dataset.adminTab));
   });
