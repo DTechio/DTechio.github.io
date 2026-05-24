@@ -43,12 +43,34 @@
               <p class="admin-user" id="admin-user">Administrador</p>
             </div>
             <div class="admin-actions">
-              <button class="text-button" id="refresh-suggestions" type="button">Atualizar</button>
+              <button class="text-button" id="refresh-admin" type="button">Atualizar</button>
               <button class="text-button" id="logout-button" type="button">Sair</button>
             </div>
           </div>
 
-          <div class="suggestions-list" id="suggestions-list"></div>
+          <div class="admin-tabs" role="tablist" aria-label="Área administrativa">
+            <button class="admin-tab is-active" data-admin-tab="suggestions" type="button">
+              Sugestões
+            </button>
+            <button class="admin-tab" data-admin-tab="tips" type="button">Dicas</button>
+          </div>
+
+          <section class="admin-tab-panel" id="suggestions-panel">
+            <div class="suggestions-list" id="suggestions-list"></div>
+          </section>
+
+          <section class="admin-tab-panel" id="tips-panel" hidden>
+            <div class="admin-filter">
+              <label for="tip-status-filter">Status</label>
+              <select id="tip-status-filter">
+                <option value="draft">Draft</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+            <div class="suggestions-list" id="tips-list"></div>
+          </section>
+
           <p class="form-status" id="admin-status" role="status" aria-live="polite"></p>
         </section>
       </section>

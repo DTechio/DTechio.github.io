@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 html {
   min-height: 100%;
 }
@@ -246,6 +250,55 @@ h1 {
   border-bottom: 1px solid var(--line);
 }
 
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  border-bottom: 1px solid var(--line);
+}
+
+.admin-tab {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: rgba(31, 42, 50, 0.66);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 10px 4px;
+}
+
+.admin-tab.is-active {
+  border-bottom-color: var(--accent);
+  color: var(--ink);
+}
+
+.admin-tab-panel {
+  margin-top: 20px;
+}
+
+.admin-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-filter label {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.admin-filter select {
+  border: 1px solid rgba(31, 42, 50, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.66);
+  color: var(--ink);
+  font: inherit;
+  padding: 8px 12px;
+}
+
 .admin-kicker,
 .admin-user {
   margin: 0;
@@ -341,6 +394,12 @@ h1 {
 .suggestion-author,
 .suggestion-actions {
   margin-top: 14px;
+}
+
+.admin-tip-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
 }
 
 .empty-state {
