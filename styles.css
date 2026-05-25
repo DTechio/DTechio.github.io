@@ -627,9 +627,16 @@ h1 {
 
   #bmc-wbtn,
   #bmc-iframe,
+  #bmc-widget,
+  #bmc-close-btn,
+  #bmc-message,
+  #bmc-notification,
+  iframe[src*="buymeacoffee"],
   [id^="bmc-"],
   [id*="bmc-"],
-  [class*="bmc-"] {
+  [class*="bmc-"],
+  [class*="bmc_"],
+  [class*="buymeacoffee"] {
     display: none !important;
   }
 }

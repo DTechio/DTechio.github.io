@@ -46,7 +46,7 @@ Para testar do zero no navegador, limpe a chave `portugues-diario-rotation` do `
 
 ## Links atuais
 
-O link "Sugerir uma dica" abre `sugerir.html`, que envia sugestoes para `tip_suggestions` com status `pending`. A area ADM nao aparece na interface publica; a URL futura ficara reservada para quem tiver acesso. O apoio ao projeto usa o widget flutuante oficial do Buy me a coffee no desktop e um link compacto no rodape do mobile.
+O link "Sugerir uma dica" abre `sugerir/`, que envia sugestoes para `tip_suggestions` com status `pending`. A area ADM nao aparece na interface publica; a URL futura ficara reservada para quem tiver acesso. O apoio ao projeto usa o widget flutuante oficial do Buy me a coffee no desktop e um link compacto no rodape do mobile.
 
 ## Area ADM
 
