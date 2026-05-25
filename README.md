@@ -50,7 +50,7 @@ O link "Sugerir uma dica" abre `sugerir.html`, que envia sugestoes para `tip_sug
 
 ## Area ADM
 
-A pagina reservada fica em `admin-portugues-diario.html` e nao e linkada na interface publica. Ela usa Supabase Auth, valida o usuario em `admin_profiles`, lista sugestoes pendentes para converter em draft ou rejeitar, permite criar dicas manuais como draft e revisar dicas por status para salvar texto ou ativar/inativar. As listas do ADM usam paginacao local com 3 itens por pagina por padrao e busca local por titulo.
+A pagina reservada fica em `adm/` e nao e linkada na interface publica. Ela usa Supabase Auth, valida o usuario em `admin_profiles`, lista sugestoes pendentes para converter em draft ou rejeitar, permite criar dicas manuais como draft e revisar dicas por status para salvar texto ou ativar/inativar. As listas do ADM usam paginacao local com 3 itens por pagina por padrao e busca local por titulo.
 
 ## Contrato futuro da API
 
