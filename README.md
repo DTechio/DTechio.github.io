@@ -46,7 +46,24 @@ Para testar do zero no navegador, limpe a chave `portugues-diario-rotation` do `
 
 ## Links atuais
 
-O link "Sugerir uma dica" abre `sugerir/`, que envia sugestoes para `tip_suggestions` com status `pending`. A area ADM nao aparece na interface publica; a URL futura ficara reservada para quem tiver acesso. O apoio ao projeto usa o widget flutuante oficial do Buy me a coffee no desktop e um link compacto no rodape do mobile.
+O link "Sugerir uma dica" abre `sugerir/`. O formulario usa Cloudflare Turnstile e envia os dados para a Edge Function `submit-suggestion`, que valida o token no servidor antes de criar uma sugestao em `tip_suggestions` com status `pending`. A area ADM nao aparece na interface publica; a URL futura ficara reservada para quem tiver acesso. O apoio ao projeto usa o widget flutuante oficial do Buy me a coffee no desktop e um link compacto no rodape do mobile.
+
+## Sugestoes com captcha
+
+A pagina `sugerir/` usa a Site key publica do Turnstile no HTML. A Secret key deve ficar apenas nos secrets do Supabase:
+
+```txt
+TURNSTILE_SECRET_KEY=sua_secret_key_do_cloudflare
+```
+
+A funcao fica em `supabase/functions/submit-suggestion/`. Ela recebe a sugestao e o token do Turnstile, valida o token com a Cloudflare e so entao insere a sugestao no banco. O arquivo `supabase/config.toml` deixa essa funcao publica (`verify_jwt = false`), porque visitantes sem login precisam enviar sugestoes.
+
+Para publicar a funcao com Supabase CLI:
+
+```sh
+supabase link --project-ref bqahyhmtezaadsfrbgtf
+supabase functions deploy submit-suggestion
+```
 
 ## Area ADM
 

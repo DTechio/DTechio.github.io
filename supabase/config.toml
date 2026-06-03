@@ -1,0 +1,2 @@
+[functions.submit-suggestion]
+verify_jwt = false

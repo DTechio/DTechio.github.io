@@ -32,6 +32,17 @@ function setStatus(message, type = "neutral") {
   status.dataset.type = type;
 }
 
+function getTurnstileToken() {
+  const tokenField = document.querySelector("input[name='cf-turnstile-response']");
+  return tokenField?.value || "";
+}
+
+function resetTurnstile() {
+  if (window.turnstile) {
+    window.turnstile.reset();
+  }
+}
+
 async function loadCategories() {
   const select = document.querySelector("#category");
 
@@ -79,8 +90,7 @@ async function submitSuggestion(event) {
     example: normalizeOptionalValue(formData.get("example")),
     example2: normalizeOptionalValue(formData.get("example2")),
     suggested_by_name: normalizeOptionalValue(formData.get("suggested_by_name")),
-    suggested_by_email: normalizeOptionalValue(formData.get("suggested_by_email")),
-    status: "pending"
+    suggested_by_email: normalizeOptionalValue(formData.get("suggested_by_email"))
   };
 
   if (!suggestion.title || !suggestion.content) {
@@ -88,20 +98,34 @@ async function submitSuggestion(event) {
     return;
   }
 
+  const turnstileToken = getTurnstileToken();
+
+  if (!turnstileToken) {
+    setStatus("Confirme a verificação de segurança antes de enviar.", "error");
+    return;
+  }
+
   submitButton.disabled = true;
   setStatus("Enviando sugestão...", "neutral");
 
   try {
-    const { error } = await supabaseClient.from("tip_suggestions").insert(suggestion);
+    const { error } = await supabaseClient.functions.invoke("submit-suggestion", {
+      body: {
+        ...suggestion,
+        turnstileToken
+      }
+    });
 
     if (error) {
       throw error;
     }
 
     form.reset();
+    resetTurnstile();
     setStatus("Sugestão enviada. Obrigado por colaborar!", "success");
   } catch (error) {
     console.error(error);
+    resetTurnstile();
     setStatus("Não foi possível enviar agora. Tente novamente em instantes.", "error");
   } finally {
     submitButton.disabled = false;

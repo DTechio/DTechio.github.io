@@ -11,6 +11,7 @@
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg" />
     <link rel="preconnect" href="https://images.unsplash.com" />
     <link rel="stylesheet" href="../styles.css" />
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body>
     <main class="page-shell" aria-labelledby="suggestion-title">
@@ -23,7 +24,7 @@
 
         <form class="suggestion-form" id="suggestion-form">
           <div class="form-field">
-            <label for="title">Título</label>
+            <label for="title">Título *</label>
             <input id="title" name="title" type="text" maxlength="120" required />
           </div>
 
@@ -35,17 +36,17 @@
           </div>
 
           <div class="form-field">
-            <label for="content">Explicação</label>
+            <label for="content">Explicação *</label>
             <textarea id="content" name="content" rows="4" maxlength="700" required></textarea>
           </div>
 
           <div class="form-field">
-            <label for="example">Exemplo</label>
+            <label for="example">Exemplo *</label>
             <input id="example" name="example" type="text" maxlength="240" />
           </div>
 
           <div class="form-field">
-            <label for="example2">Outro exemplo</label>
+            <label for="example2">Outro exemplo *</label>
             <input id="example2" name="example2" type="text" maxlength="240" />
           </div>
 
@@ -60,6 +61,12 @@
               <input id="suggested_by_email" name="suggested_by_email" type="email" maxlength="180" />
             </div>
           </div>
+
+          <div
+            class="turnstile-box cf-turnstile"
+            data-sitekey="0x4AAAAAADd0YNqvmFuvMCb3"
+            data-theme="light"
+          ></div>
 
           <button class="submit-button" type="submit">Enviar sugestão</button>
           <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
