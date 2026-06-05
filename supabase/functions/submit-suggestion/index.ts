@@ -150,8 +150,8 @@ Deno.serve(async (request) => {
     status: "pending"
   };
 
-  if (!suggestion.title || !suggestion.content) {
-    return jsonResponse({ error: "Titulo e explicacao sao obrigatorios." }, 400);
+  if (!suggestion.title || !suggestion.category_id || !suggestion.content) {
+    return jsonResponse({ error: "Titulo, categoria e explicacao sao obrigatorios." }, 400);
   }
 
   const supabaseClient = createClient(supabaseUrl, supabaseSecretKey);

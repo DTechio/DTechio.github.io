@@ -93,8 +93,8 @@ async function submitSuggestion(event) {
     suggested_by_email: normalizeOptionalValue(formData.get("suggested_by_email"))
   };
 
-  if (!suggestion.title || !suggestion.content) {
-    setStatus("Preencha pelo menos o título e a explicação.", "error");
+  if (!suggestion.title || !suggestion.category_id || !suggestion.content) {
+    setStatus("Preencha título, categoria e explicação.", "error");
     return;
   }
 
